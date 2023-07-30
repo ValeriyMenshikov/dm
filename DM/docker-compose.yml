@@ -61,7 +61,7 @@ services:
       - '5432:5432'
     environment:
       POSTGRES_PASSWORD: 'admin'
-    volumes: 
+    volumes:
       - backups:/var/backups
       - pgdata:/var/lib/postgresql/data
 
@@ -72,7 +72,7 @@ services:
       - '27017:27017'
     volumes:
       - mongodata:/data/db
-        
+
   migration:
     container_name: 'dm-migration'
     image: 'dm-api:local-latest'
@@ -82,9 +82,9 @@ services:
       args:
         PROJECT_DIR: Web
         PROJECT_NAME: DM.Web.API
-    environment: 
+    environment:
       <<: *workload-env
-      DM_MigrateOnStart: true 
+      DM_MigrateOnStart: true
     depends_on:
       - mongo
       - postgres
@@ -114,7 +114,7 @@ services:
     container_name: 'dm-rmq'
     image: 'rabbitmq:3-management'
     hostname: 'dm-rmq'
-    ports: 
+    ports:
       - '15672:15672'
       - '5672:5672'
 
@@ -227,3 +227,57 @@ services:
       API_URL: http://localhost:5051
     depends_on:
       - dmapi
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.2.2
+    container_name: dm-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka-broker:
+    image: confluentinc/cp-kafka:5.2.2
+    container_name: dm-kafka
+    platform: linux/x86_64
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: "dm-zookeeper:2181"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://dm-kafka:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+
+  kafka-schema-registry:
+    container_name: dm-kafka-schema-registry
+    image: confluentinc/cp-schema-registry:5.2.2
+    ports:
+      - "8085:8085"
+    depends_on:
+      - kafka-broker
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: PLAINTEXT://dm-kafka:29092
+      SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL: PLAINTEXT
+      SCHEMA_REGISTRY_HOST_NAME: dm-kafka-schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://dm-kafka-schema-registry:8085
+      SCHEMA_REGISTRY_SCHEMA_REGISTRY_INTER_INSTANCE_PROTOCOL: "http"
+      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: INFO
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC: _schemas
+
+  kafka-ui:
+    container_name: dm-kafka-ui
+    image: provectuslabs/kafka-ui:v0.6.1
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka-broker
+      - kafka-schema-registry
+#      - kafka-connect
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-docker
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: dm-kafka:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://dm-kafka-schema-registry:8085
