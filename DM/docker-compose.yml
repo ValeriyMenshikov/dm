@@ -45,7 +45,7 @@ x-workload-env: &workload-env
 
   DM_SearchServiceConfiguration__GrpcEndpoint: http://dm-search-engine-consumer:5050
 
-  DM_IntegrationSettings__WebUrl: http://5.63.153.31:5050
+  DM_IntegrationSettings__WebUrl: http://localhost:5050
   DM_IntegrationSettings__ApiUrl: http://localhost:5051
   DM_IntegrationSettings__AdminUrl:
   DM_IntegrationSettings__MobileUrl:
