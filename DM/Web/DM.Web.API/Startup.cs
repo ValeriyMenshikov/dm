@@ -99,6 +99,7 @@ internal class Startup
         {
             options.Interceptors.Add<ErrorInterceptor>();
         });
+        services.AddGrpcReflection();
 
         services
             .AddSwaggerGen(c => c.ConfigureGen())
@@ -186,6 +187,7 @@ internal class Startup
                 c.MapHub<NotificationHub>("/whatsup");
                 c.MapGraphQL();
                 c.MapGrpcService<AccountGrpcService>();
+                c.MapGrpcReflectionService();
             });
     }
 }
