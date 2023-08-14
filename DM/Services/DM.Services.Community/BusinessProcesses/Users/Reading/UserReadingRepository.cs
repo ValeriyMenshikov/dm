@@ -50,6 +50,17 @@ internal class UserReadingRepository : MongoCollectionRepository<UserSettings>, 
             .ProjectTo<GeneralUser>(mapper.ConfigurationProvider)
             .ToArrayAsync();
 
+    /// <summary>
+    ///
+    /// </summary>
+    public IAsyncEnumerable<GeneralUser> GetUsersAsyncEnumerable()
+    {
+        return GetQuery(true)
+            .OrderBy(user => user.RegistrationDate)
+            .ProjectTo<GeneralUser>(mapper.ConfigurationProvider)
+            .AsAsyncEnumerable();
+    }
+
     private IQueryable<User> GetQuery(bool withInactive)
     {
         var query = dmDbContext.Users.Where(u => !u.IsRemoved && u.Activated);

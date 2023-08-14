@@ -50,6 +50,7 @@ internal class UserUpdatingService : IUserUpdatingService
             .MaybeField(u => u.Name, updateUser.Name?.Trim())
             .MaybeField(u => u.Location, updateUser.Location?.Trim())
             .MaybeField(u => u.Skype, updateUser.Skype?.Trim())
+            .MaybeField(u => u.Icq, updateUser.Icq?.Trim())
             .MaybeField(u => u.Info, updateUser.Info?.Trim())
             .MaybeField(u => u.RatingDisabled, updateUser.RatingDisabled);
 

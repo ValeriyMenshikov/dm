@@ -18,11 +18,13 @@ internal class CharacterProfile : Profile
 
         CreateMap<Character, CreateCharacter>()
             .ForMember(c => c.IsNpc, s => s.MapFrom(c => c.Privacy.IsNpc))
-            .ForMember(c => c.AccessPolicy, s => s.MapFrom<AccessPolicyConverter>());
+            .ForMember(c => c.AccessPolicy, s => s.MapFrom<AccessPolicyConverter>())
+            .ForMember(c => c.GameId, s => s.Ignore());
 
         CreateMap<Character, UpdateCharacter>()
             .ForMember(c => c.IsNpc, s => s.MapFrom(c => c.Privacy.IsNpc))
-            .ForMember(c => c.AccessPolicy, s => s.MapFrom<AccessPolicyConverter>());
+            .ForMember(c => c.AccessPolicy, s => s.MapFrom<AccessPolicyConverter>())
+            .ForMember(c => c.CharacterId, s => s.Ignore());
     }
 
     private class AccessPolicyConverter :

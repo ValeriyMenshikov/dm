@@ -14,12 +14,15 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="HotChocolate" Version="13.3.1" />
         <PackageReference Include="Jamq.Client.Rabbit.DependencyInjection" Version="0.10.0" />
         <PackageReference Include="Mongo.Migration" Version="3.1.4" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.3" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <PackageReference Include="HotChocolate.AspNetCore" Version="13.3.1" />
+        <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.3.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,8 +33,9 @@
         <ProjectReference Include="..\..\Services\DM.Services.Gaming\DM.Services.Gaming.csproj" />
         <ProjectReference Include="..\..\Services\DM.Services.Notifications\DM.Services.Notifications.csproj" />
         <ProjectReference Include="..\DM.Web.Core\DM.Web.Core.csproj" />
+        <ProjectReference Include="..\DM.Web.Grpc\DM.Web.Grpc.csproj" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <Protobuf Include="../../Services/DM.Services.Search.Consumer/Protos/search.proto" />
     </ItemGroup>

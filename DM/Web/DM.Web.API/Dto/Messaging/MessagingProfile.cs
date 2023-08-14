@@ -13,11 +13,18 @@ internal class MessagingProfile : Profile
     /// <inheritdoc />
     public MessagingProfile()
     {
-        CreateMap<DtoConversation, Conversation>();
-        CreateMap<DtoMessage, Message>();
-        CreateMap<Message, CreateMessage>();
+        CreateMap<DtoConversation, Conversation>()
+            .ForMember(d => d.Name, s => s.Ignore());
 
-        CreateMap<DtoChatMessage, ChatMessage>();
+        CreateMap<DtoMessage, Message>()
+            .ForMember(d => d.Created, s => s.Ignore());
+
+        CreateMap<Message, CreateMessage>()
+            .ForMember(d => d.ConversationId, s => s.Ignore());
+
+        CreateMap<DtoChatMessage, ChatMessage>()
+            .ForMember(d => d.Created, s => s.Ignore());
+
         CreateMap<ChatMessage, CreateChatMessage>();
     }
 }

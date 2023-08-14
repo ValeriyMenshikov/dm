@@ -32,6 +32,6 @@ internal class Program
         return Host.CreateDefaultBuilder(args)
             .UseServiceProviderFactory(new AutofacServiceProviderFactory())
             .UseSerilog()
-            .ConfigureWebHostDefaults(webBuilder => webBuilder.UseDefault<Startup>());
+            .ConfigureWebHostDefaults(webBuilder => webBuilder.UseWebApiAndGrpc<Startup>());
     }
 }

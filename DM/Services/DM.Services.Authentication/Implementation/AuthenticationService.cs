@@ -153,7 +153,12 @@ internal class AuthenticationService : IAuthenticationService
     public async Task<IIdentity> LogoutElsewhere()
     {
         var identity = identityProvider.Current;
-        await repository.RemoveSessionsExcept(identity.User.UserId, identity.Session.Id);
+
+        if (identity.User is not null && identity.Session is not null)
+        {
+            await repository.RemoveSessionsExcept(identity.User.UserId, identity.Session.Id);
+        }
+
         return identity;
     }
 

@@ -19,12 +19,20 @@ public class PagingQuery
     /// Page size
     /// </summary>
     public int? Size { get; set; }
-        
+
     /// <summary>
     /// Empty query to get paging information without fetching the data
     /// </summary>
     public static PagingQuery Empty => new()
     {
         Size = 0
+    };
+
+    /// <summary>
+    /// Default page
+    /// </summary>
+    public static PagingQuery Default => new()
+    {
+        Size = 10
     };
 }

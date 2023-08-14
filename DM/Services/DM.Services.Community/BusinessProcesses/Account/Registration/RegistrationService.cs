@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using DM.Services.Authentication.Implementation.Security;
 using DM.Services.Community.BusinessProcesses.Account.Activation;
@@ -39,7 +40,7 @@ internal class RegistrationService : IRegistrationService
     }
 
     /// <inheritdoc />
-    public async Task Register(UserRegistration registration)
+    public async Task<Guid> Register(UserRegistration registration)
     {
         await validator.ValidateAndThrowAsync(registration);
 
@@ -50,5 +51,7 @@ internal class RegistrationService : IRegistrationService
         await repository.AddUser(user, token);
         await mailSender.Send(user.Email, user.Login, token.TokenId);
         await producer.Send(EventType.NewUser, user.UserId);
+
+        return user.UserId;
     }
 }

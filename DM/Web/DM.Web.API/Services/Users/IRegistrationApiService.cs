@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using DM.Web.API.Dto.Users;
 
@@ -12,5 +13,5 @@ public interface IRegistrationApiService
     /// Register new user
     /// </summary>
     /// <param name="registration">Registration information</param>
-    Task Register(Registration registration);
+    Task<Guid> Register(Registration registration);
 }

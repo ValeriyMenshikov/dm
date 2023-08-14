@@ -15,14 +15,19 @@ internal class GameProfile : Profile
     /// <inheritdoc />
     public GameProfile()
     {
-        CreateMap<GamesQuery, DM.Services.Gaming.Dto.Input.GamesQuery>();
+        CreateMap<GamesQuery, DM.Services.Gaming.Dto.Input.GamesQuery>()
+            .ForMember(d => d.TagId, s => s.Ignore());
 
         CreateMap<DtoGame, Game>()
             .Include<GameExtended, Game>()
             .ForMember(d => d.System, s => s.MapFrom(g => g.SystemName))
             .ForMember(d => d.Setting, s => s.MapFrom(g => g.SettingName))
             .ForMember(d => d.Released, s => s.MapFrom(g => g.ReleaseDate ?? g.CreateDate))
-            .ForMember(d => d.Participation, s => s.MapFrom<GameParticipationResolver>());
+            .ForMember(d => d.Participation, s => s.MapFrom<GameParticipationResolver>())
+            .ForMember(d => d.Schema, s => s.Ignore())
+            .ForMember(d => d.Info, s => s.Ignore())
+            .ForMember(d => d.Notes, s => s.Ignore())
+            .ForMember(d => d.PrivacySettings, s => s.Ignore());
 
         CreateMap<GameExtended, Game>()
             .ForMember(d => d.PrivacySettings, s => s.MapFrom(g => g))
@@ -55,7 +60,8 @@ internal class GameProfile : Profile
             .ForMember(g => g.HideDiceResult, s => s.MapFrom(g => !g.PrivacySettings.ViewDice))
             .ForMember(g => g.ShowPrivateMessages, s => s.MapFrom(g => g.PrivacySettings.ViewPrivates))
             .ForMember(g => g.CommentariesAccessMode, s => s.MapFrom(g => g.PrivacySettings.CommentariesAccess))
-            .ForMember(g => g.Tags, s => s.MapFrom(g => g.Tags.Select(t => t.Id)));
+            .ForMember(g => g.Tags, s => s.MapFrom(g => g.Tags.Select(t => t.Id)))
+            .ForMember(g => g.DisableAlignment, s => s.Ignore());
 
         CreateMap<Game, UpdateGame>()
             .ForMember(g => g.SystemName, s => s.MapFrom(g => g.System))
@@ -67,6 +73,10 @@ internal class GameProfile : Profile
             .ForMember(g => g.HideInventory, s => s.MapFrom(g => !g.PrivacySettings.ViewInventory))
             .ForMember(g => g.HideDiceResult, s => s.MapFrom(g => !g.PrivacySettings.ViewDice))
             .ForMember(g => g.ShowPrivateMessages, s => s.MapFrom(g => g.PrivacySettings.ViewPrivates))
-            .ForMember(g => g.CommentariesAccessMode, s => s.MapFrom(g => g.PrivacySettings.CommentariesAccess));
+            .ForMember(g => g.CommentariesAccessMode, s => s.MapFrom(g => g.PrivacySettings.CommentariesAccess))
+            .ForMember(g => g.GameId, s => s.Ignore())
+            .ForMember(g => g.DisableAlignment, s => s.Ignore())
+            .ForMember(g => g.Notepad, s => s.Ignore())
+            .ForMember(g => g.Tags, s => s.Ignore());
     }
 }

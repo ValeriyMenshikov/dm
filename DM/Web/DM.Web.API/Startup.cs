@@ -16,6 +16,9 @@ using DM.Services.Uploading.Configuration;
 using DM.Web.API.Authentication;
 using DM.Web.API.Binding;
 using DM.Web.API.Configuration;
+using DM.Web.API.GraphQL;
+using DM.Web.API.Grpc;
+using DM.Web.API.Grpc.Account;
 using DM.Web.API.Middleware;
 using DM.Web.API.Notifications;
 using DM.Web.API.Swagger;
@@ -92,10 +95,17 @@ internal class Startup
 
         services.AddSignalR();
 
+        services.AddGrpc(options =>
+        {
+            options.Interceptors.Add<ErrorInterceptor>();
+        });
+
         services
             .AddSwaggerGen(c => c.ConfigureGen())
             .AddMvc(config => config.ModelBinderProviders.Insert(0, new ReadableGuidBinderProvider()))
             .AddJsonOptions(config => config.Setup(httpContextAccessor, bbParserProvider));
+
+        services.AddGraphQLService();
 
         if (migrateOnStart)
         {
@@ -168,11 +178,14 @@ internal class Startup
                 .AllowAnyMethod()
                 .AllowCredentials())
             .UseRouting()
+            .UseWebSockets()
             .UseHealthChecks("/_health")
             .UseEndpoints(c =>
             {
                 c.MapControllers();
                 c.MapHub<NotificationHub>("/whatsup");
+                c.MapGraphQL();
+                c.MapGrpcService<AccountGrpcService>();
             });
     }
 }

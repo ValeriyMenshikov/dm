@@ -18,6 +18,12 @@ public interface IUserReadingService
     Task<(IEnumerable<GeneralUser> users, PagingResult paging)> Get(PagingQuery query, bool withInactive);
 
     /// <summary>
+    /// Get users as async enumerable
+    /// </summary>
+    /// <returns>Users enumerator</returns>
+    IAsyncEnumerable<GeneralUser> GetUsersAsyncEnumerable();
+
+    /// <summary>
     /// Get community user short info by login
     /// </summary>
     /// <param name="login">User login</param>

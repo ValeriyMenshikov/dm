@@ -47,15 +47,19 @@ internal class LoginApiService : ILoginApiService
                 var userDetails = await userReadingService.GetDetails(identityProvider.Current.User.Login);
                 return new Envelope<User>(mapper.Map<User>(userDetails));
             case AuthenticationError.WrongLogin:
+                const string wrongLoginError = "There are no users found with this login. Maybe there was a typo?";
                 throw new HttpBadRequestException(new Dictionary<string, string>
-                {
-                    ["login"] = "There are no users found with this login. Maybe there was a typo?"
-                });
+                    {
+                        ["login"] = wrongLoginError
+                    },
+                    wrongLoginError);
             case AuthenticationError.WrongPassword:
+                const string wrongPasswordMessage = "The password is incorrect. Did you forget to switch the keyboard?";
                 throw new HttpBadRequestException(new Dictionary<string, string>
-                {
-                    ["login"] = "The password is incorrect. Did you forget to switch the keyboard?"
-                });
+                    {
+                        ["login"] = wrongPasswordMessage
+                    },
+                    wrongPasswordMessage);
             case AuthenticationError.Banned:
             case AuthenticationError.Inactive:
             case AuthenticationError.Removed:

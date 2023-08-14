@@ -56,6 +56,7 @@ x-workload-env: &workload-env
   DM_IntegrationSettings__CorsUrls__3: http://5.63.153.31:5051
 
   PORT: 5050
+  GRPC_PORT: 5051
 
 services:
   postgres:
@@ -65,7 +66,7 @@ services:
       - '5432:5432'
     environment:
       POSTGRES_PASSWORD: 'admin'
-    volumes: 
+    volumes:
       - backups:/var/backups
       - pgdata:/var/lib/postgresql/data
 
@@ -76,7 +77,7 @@ services:
       - '27017:27017'
     volumes:
       - mongodata:/data/db
-        
+
   migration:
     container_name: 'dm-migration'
     image: 'dm-api:local-latest'
@@ -86,9 +87,9 @@ services:
       args:
         PROJECT_DIR: Web
         PROJECT_NAME: DM.Web.API
-    environment: 
+    environment:
       <<: *workload-env
-      DM_MigrateOnStart: true 
+      DM_MigrateOnStart: true
     depends_on:
       - mongo
       - postgres
@@ -118,7 +119,7 @@ services:
     container_name: 'dm-rmq'
     image: 'rabbitmq:3-management'
     hostname: 'dm-rmq'
-    ports: 
+    ports:
       - '15672:15672'
       - '5672:5672'
 
@@ -216,6 +217,7 @@ services:
         PROJECT_NAME: DM.Web.API
     ports:
       - '5051:5050'
+      - '5055:5051'
     environment: *workload-env
     depends_on:
       - migration

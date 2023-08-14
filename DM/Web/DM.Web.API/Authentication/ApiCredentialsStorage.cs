@@ -15,9 +15,20 @@ internal class ApiCredentialsStorage : ICredentialsStorage
     public const string HttpAuthTokenHeader = "X-Dm-Auth-Token";
 
     /// <inheritdoc />
-    public Task<TokenCredentials> ExtractToken(HttpContext httpContext)
+    public Task<TokenCredentials> ExtractTokenFromRequest(HttpContext httpContext)
     {
-        if (!httpContext.Request.Headers.TryGetValue(HttpAuthTokenHeader, out var headerValues))
+        return ExtractTokenFromHeaders(httpContext.Request.Headers);
+    }
+
+    /// <inheritdoc />
+    public Task<TokenCredentials> ExtractTokenFromResponse(HttpContext httpContext)
+    {
+        return ExtractTokenFromHeaders(httpContext.Response.Headers);
+    }
+
+    private static Task<TokenCredentials> ExtractTokenFromHeaders(IHeaderDictionary headers)
+    {
+        if (!headers.TryGetValue(HttpAuthTokenHeader, out var headerValues))
         {
             return Task.FromResult<TokenCredentials>(null);
         }

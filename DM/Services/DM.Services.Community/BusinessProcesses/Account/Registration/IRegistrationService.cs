@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 namespace DM.Services.Community.BusinessProcesses.Account.Registration;
@@ -12,5 +13,5 @@ public interface IRegistrationService
     /// </summary>
     /// <param name="registration">Registration info</param>
     /// <returns></returns>
-    Task Register(UserRegistration registration);
+    Task<Guid> Register(UserRegistration registration);
 }

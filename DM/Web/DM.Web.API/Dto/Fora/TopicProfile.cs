@@ -20,7 +20,8 @@ internal class TopicProfile : Profile
             .ForMember(d => d.Created, s => s.MapFrom(c => c.CreateDate));
 
         CreateMap<Topic, CreateTopic>()
-            .ForMember(d => d.Text, s => s.MapFrom(t => t.Description));
+            .ForMember(d => d.Text, s => s.MapFrom(t => t.Description))
+            .ForMember(d => d.ForumTitle, s => s.Ignore());
 
         CreateMap<Topic, UpdateTopic>()
             .ForMember(d => d.Text, s => s.MapFrom(t => t.Description))

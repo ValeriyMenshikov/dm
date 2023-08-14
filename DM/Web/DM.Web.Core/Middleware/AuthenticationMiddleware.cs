@@ -34,7 +34,7 @@ public class AuthenticationMiddleware
     {
         if (identityProvider.Current == null)
         {
-            var tokenCredentials = await credentialsStorage.ExtractToken(httpContext);
+            var tokenCredentials = await credentialsStorage.ExtractTokenFromRequest(httpContext);
             await authenticationService.Authenticate(tokenCredentials, httpContext);
         }
 

@@ -15,7 +15,10 @@ internal class CommentProfile : Profile
             .ForMember(d => d.Created, s => s.MapFrom(c => c.CreateDate))
             .ForMember(d => d.Updated, s => s.MapFrom(c => c.LastUpdateDate));
 
-        CreateMap<Comment, CreateComment>();
-        CreateMap<Comment, UpdateComment>();
+        CreateMap<Comment, CreateComment>()
+            .ForMember(d => d.EntityId, s => s.Ignore());
+
+        CreateMap<Comment, UpdateComment>()
+            .ForMember(d => d.CommentId, s => s.Ignore());
     }
 }

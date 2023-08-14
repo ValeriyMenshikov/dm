@@ -25,6 +25,12 @@ internal interface IUserReadingRepository
     Task<IEnumerable<GeneralUser>> GetUsers(PagingData paging, bool withInactive);
 
     /// <summary>
+    /// Get users as async enumerable
+    /// </summary>
+    /// <returns>Users enumerator</returns>
+    IAsyncEnumerable<GeneralUser> GetUsersAsyncEnumerable();
+
+    /// <summary>
     /// Get user by login
     /// </summary>
     /// <param name="login"></param>

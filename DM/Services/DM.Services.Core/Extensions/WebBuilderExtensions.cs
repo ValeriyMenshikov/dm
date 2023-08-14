@@ -10,45 +10,59 @@ namespace DM.Services.Core.Extensions;
 public static class WebBuilderExtensions
 {
     private const int DefaultPort = 5000;
+    private const int DefaultGrpcPort = 5001;
 
-    private static int ExtractPort()
+    private const string PortEnv = "PORT";
+    private const string GrpcPortEnv = "PORT";
+
+    private static int ExtractPort(string envName, int defaultPort)
     {
         // For heroku deployment, where only available port is defined in runtime by the environment variable
-        var predefinedPort = Environment.GetEnvironmentVariable("PORT");
-        return string.IsNullOrEmpty(predefinedPort) || !int.TryParse(predefinedPort, out var port)
-            ? DefaultPort
+        var predefinedPort = Environment.GetEnvironmentVariable(envName);
+        return string.IsNullOrEmpty(predefinedPort) || int.TryParse(predefinedPort, out var port) is false
+            ? defaultPort
             : port;
     }
 
     private static IWebHostBuilder UseCustomPort(this IWebHostBuilder builder) => builder
-        .UseUrls($"http://+:{ExtractPort()}");
+        .UseUrls($"http://+:{ExtractPort(PortEnv, DefaultPort)}");
 
     private static IWebHostBuilder UseCustomGrpcPort(this IWebHostBuilder builder) => builder
         .UseKestrel(options =>
         {
             options.AllowSynchronousIO = true;
-            options.ListenAnyIP(ExtractPort(), cfg => cfg.Protocols = HttpProtocols.Http2);
+            options.ListenAnyIP(ExtractPort(GrpcPortEnv, DefaultGrpcPort), cfg => cfg.Protocols = HttpProtocols.Http1);
+        });
+
+    private static IWebHostBuilder UseCustomWebApiAndGrpcPort(this IWebHostBuilder builder) => builder
+        .UseKestrel(options =>
+        {
+            options.AllowSynchronousIO = true;
+            options.ListenAnyIP(ExtractPort(PortEnv, DefaultPort), cfg => cfg.Protocols = HttpProtocols.Http1);
+            options.ListenAnyIP(ExtractPort(GrpcPortEnv, DefaultGrpcPort), cfg => cfg.Protocols = HttpProtocols.Http2);
         });
 
     /// <summary>
     /// Настроить grpc-сервер по-умолчанию
     /// </summary>
-    /// <param name="builder"></param>
-    /// <typeparam name="TStartup"></typeparam>
-    /// <returns></returns>
     public static IWebHostBuilder UseDefaultGrpc<TStartup>(this IWebHostBuilder builder)
         where TStartup : class => builder
-        .UseStartup<TStartup>()
-        .UseCustomGrpcPort();
+            .UseStartup<TStartup>()
+            .UseCustomGrpcPort();
 
     /// <summary>
     /// Настроить веб-сервер по-умолчанию
     /// </summary>
-    /// <param name="builder"></param>
-    /// <typeparam name="TStartup"></typeparam>
-    /// <returns></returns>
     public static IWebHostBuilder UseDefault<TStartup>(this IWebHostBuilder builder)
         where TStartup : class => builder
-        .UseStartup<TStartup>()
-        .UseCustomPort();
+            .UseStartup<TStartup>()
+            .UseCustomPort();
+
+    /// <summary>
+    /// Настроить Web API + gRPC
+    /// </summary>
+    public static IWebHostBuilder UseWebApiAndGrpc<TStartup>(this IWebHostBuilder builder)
+        where TStartup : class => builder
+            .UseStartup<TStartup>()
+            .UseCustomWebApiAndGrpcPort();
 }

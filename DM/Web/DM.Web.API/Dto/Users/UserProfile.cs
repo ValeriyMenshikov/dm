@@ -28,6 +28,7 @@ internal class UserProfile : Profile
                     .Where(role => userRole.HasFlag(role)));
 
         CreateMap<GeneralUser, User>()
+            .ForMember(d => d.Registration, s => s.Ignore())
             .ForMember(d => d.Roles, s => s.MapFrom(u => u.Role))
             .ForMember(d => d.Online, s => s.MapFrom(u => u.LastVisitDate))
             .ForMember(d => d.Rating, s => s.MapFrom(u => new Rating
@@ -42,7 +43,8 @@ internal class UserProfile : Profile
             .ForMember(d => d.Registration, s => s.MapFrom(u => u.RegistrationDate));
         CreateMap<DM.Services.Authentication.Dto.UserSettings, UserSettings>().ReverseMap();
         CreateMap<DM.Services.Authentication.Dto.PagingSettings, PagingSettings>().ReverseMap();
-        CreateMap<UserDetails, UpdateUser>();
+        CreateMap<UserDetails, UpdateUser>()
+            .ForMember(d => d.RatingDisabled, s => s.Ignore());
 
         CreateMap<Registration, UserRegistration>();
         CreateMap<ResetPassword, UserPasswordReset>();

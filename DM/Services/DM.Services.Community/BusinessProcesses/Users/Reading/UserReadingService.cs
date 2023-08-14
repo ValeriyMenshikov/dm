@@ -32,6 +32,8 @@ internal class UserReadingService : IUserReadingService
         return (users, paging.Result);
     }
 
+    public IAsyncEnumerable<GeneralUser> GetUsersAsyncEnumerable() => readingRepository.GetUsersAsyncEnumerable();
+
     /// <inheritdoc />
     public async Task<GeneralUser> Get(string login)
     {

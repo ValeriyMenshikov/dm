@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using DM.Services.Community.BusinessProcesses.Account.Registration;
@@ -19,8 +20,8 @@ internal class RegistrationApiService : IRegistrationApiService
         this.registrationService = registrationService;
         this.mapper = mapper;
     }
-        
+
     /// <inheritdoc />
-    public Task Register(Registration registration) =>
+    public Task<Guid> Register(Registration registration) =>
         registrationService.Register(mapper.Map<UserRegistration>(registration));
 }
