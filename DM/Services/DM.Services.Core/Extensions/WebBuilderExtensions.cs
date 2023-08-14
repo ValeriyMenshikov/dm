@@ -13,7 +13,7 @@ public static class WebBuilderExtensions
     private const int DefaultGrpcPort = 5001;
 
     private const string PortEnv = "PORT";
-    private const string GrpcPortEnv = "PORT";
+    private const string GrpcPortEnv = "GRPC_PORT";
 
     private static int ExtractPort(string envName, int defaultPort)
     {
