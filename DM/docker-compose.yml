@@ -184,7 +184,7 @@ services:
         PROJECT_DIR: Services
         PROJECT_NAME: DM.Services.Search.Consumer
     ports:
-      - '5052:5050'
+      - '5052:5051'
     environment: *workload-env
     depends_on:
       - rabbitmq
