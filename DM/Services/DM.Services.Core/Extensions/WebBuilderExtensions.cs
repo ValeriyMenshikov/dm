@@ -31,7 +31,7 @@ public static class WebBuilderExtensions
         .UseKestrel(options =>
         {
             options.AllowSynchronousIO = true;
-            options.ListenAnyIP(ExtractPort(GrpcPortEnv, DefaultGrpcPort), cfg => cfg.Protocols = HttpProtocols.Http1);
+            options.ListenAnyIP(ExtractPort(GrpcPortEnv, DefaultGrpcPort), cfg => cfg.Protocols = HttpProtocols.Http2);
         });
 
     private static IWebHostBuilder UseCustomWebApiAndGrpcPort(this IWebHostBuilder builder) => builder
