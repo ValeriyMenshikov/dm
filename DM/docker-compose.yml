@@ -54,7 +54,7 @@ x-workload-env: &workload-env
   DM_IntegrationSettings__CorsUrls__1: http://localhost:8080
   DM_IntegrationSettings__CorsUrls__2: http://5.63.153.31:5050
   DM_IntegrationSettings__CorsUrls__3: http://5.63.153.31:5051
-  DM_IntegrationSettings__CorsUrls__4: *
+  DM_IntegrationSettings__CorsUrls__4: '*'
 
   PORT: 5050
   GRPC_PORT: 5051
@@ -231,6 +231,6 @@ services:
     ports:
       - '5050:80'
     environment:
-      API_URL: http://5.63.153.31:5051
+      API_URL: http://localhost:5051
     depends_on:
       - dmapi
