@@ -231,6 +231,6 @@ services:
     ports:
       - '5050:80'
     environment:
-      API_URL: http://5.63.153.31:5051
+      API_URL: http://localhost:5051
     depends_on:
       - dmapi
