@@ -19,7 +19,6 @@ const defaultHeaders: { [key: string]: string } = {
 };
 
 const apiHost = Config.API_URL ?? process.env.API_URL;
-// const apiHost = "http://5.63.153.31:5051";
 
 const configuration: AxiosRequestConfig = {
   baseURL: `${apiHost}/v1`,
