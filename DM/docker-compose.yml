@@ -95,26 +95,26 @@ services:
       - mongo
       - postgres
 
-  opensearch:
-    container_name: 'dm-es'
-    image: 'opensearchproject/opensearch:2'
-    ports:
-      - '9200:9200'
-      - '9600:9600'
-    environment:
-      discovery.type: 'single-node'
-      plugins.security.disabled: 'true'
-    volumes:
-      - osdata:/usr/share/opensearch/data
+#  opensearch:
+#    container_name: 'dm-es'
+#    image: 'opensearchproject/opensearch:2'
+#    ports:
+#      - '9200:9200'
+#      - '9600:9600'
+#    environment:
+#      discovery.type: 'single-node'
+#      plugins.security.disabled: 'true'
+#    volumes:
+#      - osdata:/usr/share/opensearch/data
 
-  opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
-    container_name: 'dm-kibana'
-    ports:
-      - '5601:5601'
-    environment:
-      OPENSEARCH_HOSTS: '["http://dm-es:9200"]'
-      DISABLE_SECURITY_DASHBOARDS_PLUGIN: 'true'
+#  opensearch-dashboards:
+#    image: opensearchproject/opensearch-dashboards:latest
+#    container_name: 'dm-kibana'
+#    ports:
+#      - '5601:5601'
+#    environment:
+#      OPENSEARCH_HOSTS: '["http://dm-es:9200"]'
+#      DISABLE_SECURITY_DASHBOARDS_PLUGIN: 'true'
 
   rabbitmq:
     container_name: 'dm-rmq'
@@ -175,21 +175,21 @@ services:
       - rabbitmq
       - mailhog
 
-  dmsearchengineconsumer:
-    container_name: 'dm-search-engine-consumer'
-    image: 'dm-consumer-search:local-latest'
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        PROJECT_DIR: Services
-        PROJECT_NAME: DM.Services.Search.Consumer
-    ports:
-      - '5052:5051'
-    environment: *workload-env
-    depends_on:
-      - rabbitmq
-      - opensearch
+#  dmsearchengineconsumer:
+#    container_name: 'dm-search-engine-consumer'
+#    image: 'dm-consumer-search:local-latest'
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      args:
+#        PROJECT_DIR: Services
+#        PROJECT_NAME: DM.Services.Search.Consumer
+#    ports:
+#      - '5052:5051'
+#    environment: *workload-env
+#    depends_on:
+#      - rabbitmq
+#      - opensearch
 
   dmnotificationsconsumer:
     container_name: 'dm-notifications-consumer'
