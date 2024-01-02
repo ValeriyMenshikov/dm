@@ -62,7 +62,7 @@ x-workload-env: &workload-env
 services:
   postgres:
     container_name: 'dm-pg'
-    image: 'postgres:latest'
+    image: 'postgres:14.4-alpine'
     ports:
       - '5432:5432'
     environment:
