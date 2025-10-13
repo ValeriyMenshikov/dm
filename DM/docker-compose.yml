@@ -104,7 +104,7 @@ services:
     environment:
       discovery.type: 'single-node'
       plugins.security.disabled: 'true'
-      OPENSEARCH_INITIAL_ADMIN_PASSWORD: 'Admin123!'
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: 'Str0ng!Admin#2025'
     volumes:
       - osdata:/usr/share/opensearch/data
 
