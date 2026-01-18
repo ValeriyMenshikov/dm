@@ -71,6 +71,7 @@ services:
     volumes:
       - backups:/var/backups
       - pgdata:/var/lib/postgresql/data
+      - ./postgres/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf:ro
 
   mongo:
     container_name: 'dm-mongo'
