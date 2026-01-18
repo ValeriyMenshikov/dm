@@ -12,7 +12,7 @@ volumes:
   miniodata:
 
 x-workload-env: &workload-env
-  DM_ConnectionStrings__Rdb: Host=dm-pg;Port=5432;User ID=postgres;Password=${POSTGRES_PASSWORD};Database=dm3.5;Pooling=true;MinPoolSize=0;MaxPoolSize=100;Connection Idle Lifetime=60;
+  DM_ConnectionStrings__Rdb: Host=dm-pg;Port=5432;User ID=postgres;Password=QAZWSX_EDC_2026;Database=dm3.5;Pooling=true;MinPoolSize=0;MaxPoolSize=100;Connection Idle Lifetime=60;
   DM_ConnectionStrings__Mongo: mongodb://dm-mongo:27017/dm3-5?maxPoolSize=1000
   DM_ConnectionStrings__Logs: http://dm-es:9200
   DM_ConnectionStrings__TracingEndpoint: http://dm-jaeger:14268/api/traces
@@ -68,7 +68,7 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: QAZWSX_EDC_2026
     volumes:
       - backups:/var/backups
       - pgdata:/var/lib/postgresql/data
